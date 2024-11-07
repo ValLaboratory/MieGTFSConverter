@@ -13,5 +13,25 @@ namespace MieGTFSConverter {
         public Form1() {
             InitializeComponent();
         }
+
+        private void GtfsTextBox_DragDrop(object sender, DragEventArgs e) {
+
+        }
+
+        private void GtfsTextBox_DragEnter(object sender, DragEventArgs e) {
+
+        }
+
+        private void GtfsBtn_Click(object sender, EventArgs e) {
+
+        }
+
+        private void RoutesConvertBtn_Click(object sender, EventArgs e) {
+
+        }
+
+        private void StopsConvertBtn_Click(object sender, EventArgs e) {
+
+        }
     }
 }

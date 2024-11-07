@@ -40,6 +40,8 @@ namespace MieGTFSConverter {
             this.GtfsTextBox.Name = "GtfsTextBox";
             this.GtfsTextBox.Size = new System.Drawing.Size(429, 19);
             this.GtfsTextBox.TabIndex = 0;
+            this.GtfsTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.GtfsTextBox_DragDrop);
+            this.GtfsTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.GtfsTextBox_DragEnter);
             // 
             // label1
             // 
@@ -58,6 +60,7 @@ namespace MieGTFSConverter {
             this.RoutesConvertBtn.TabIndex = 2;
             this.RoutesConvertBtn.Text = "routes.txt 変換";
             this.RoutesConvertBtn.UseVisualStyleBackColor = true;
+            this.RoutesConvertBtn.Click += new System.EventHandler(this.RoutesConvertBtn_Click);
             // 
             // StopsConvertBtn
             // 
@@ -67,6 +70,7 @@ namespace MieGTFSConverter {
             this.StopsConvertBtn.TabIndex = 3;
             this.StopsConvertBtn.Text = "stops.txt 変換";
             this.StopsConvertBtn.UseVisualStyleBackColor = true;
+            this.StopsConvertBtn.Click += new System.EventHandler(this.StopsConvertBtn_Click);
             // 
             // label2
             // 
@@ -103,6 +107,7 @@ namespace MieGTFSConverter {
             this.GtfsBtn.TabIndex = 7;
             this.GtfsBtn.Text = "…";
             this.GtfsBtn.UseVisualStyleBackColor = true;
+            this.GtfsBtn.Click += new System.EventHandler(this.GtfsBtn_Click);
             // 
             // Form1
             // 
