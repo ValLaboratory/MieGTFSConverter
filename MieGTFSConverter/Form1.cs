@@ -14,7 +14,18 @@ namespace MieGTFSConverter {
         public Form1() {
             InitializeComponent();
 
+            this.Text += " v" + Version();
+
             StatusLabel.Text = "";
+        }
+
+        /// <summary>
+        /// ツールバージョン
+        /// </summary>
+        /// <returns></returns>
+        private string Version() {
+            System.Diagnostics.FileVersionInfo ver = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            return ver.FileVersion;
         }
 
         private void GtfsTextBox_DragDrop(object sender, DragEventArgs e) {
