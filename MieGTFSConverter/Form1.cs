@@ -72,8 +72,9 @@ namespace MieGTFSConverter {
 
                 StatusLabel.Text = "GTFS読み込み";
 
+                FileConverter fileConverter = new FileConverter(iProgress);
+                fileConverter.Convert(gtfsPath + "\\routes.txt");
 
-                iProgress.Report("routes.txt 変換 完了");
 
             } catch (Exception ex) {
                 StatusLabel.Text = "routes.txt 変換 失敗\n";
