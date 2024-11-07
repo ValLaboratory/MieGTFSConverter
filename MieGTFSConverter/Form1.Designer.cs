@@ -36,10 +36,13 @@ namespace MieGTFSConverter {
             // 
             // GtfsTextBox
             // 
+            this.GtfsTextBox.AllowDrop = true;
+            this.GtfsTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::MieGTFSConverter.Properties.Settings.Default, "gtfsDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.GtfsTextBox.Location = new System.Drawing.Point(59, 52);
             this.GtfsTextBox.Name = "GtfsTextBox";
             this.GtfsTextBox.Size = new System.Drawing.Size(429, 19);
             this.GtfsTextBox.TabIndex = 0;
+            this.GtfsTextBox.Text = global::MieGTFSConverter.Properties.Settings.Default.gtfsDir;
             this.GtfsTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.GtfsTextBox_DragDrop);
             this.GtfsTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.GtfsTextBox_DragEnter);
             // 
@@ -124,6 +127,7 @@ namespace MieGTFSConverter {
             this.Controls.Add(this.GtfsTextBox);
             this.Name = "Form1";
             this.Text = "三重GTFSコンバーター";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
