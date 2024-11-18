@@ -27,7 +27,6 @@ namespace MieGTFSConverter {
             this.GtfsTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.RoutesConvertBtn = new System.Windows.Forms.Button();
-            this.StopsConvertBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.StatusLabel = new System.Windows.Forms.Label();
@@ -57,23 +56,13 @@ namespace MieGTFSConverter {
             // 
             // RoutesConvertBtn
             // 
-            this.RoutesConvertBtn.Location = new System.Drawing.Point(59, 119);
+            this.RoutesConvertBtn.Location = new System.Drawing.Point(147, 111);
             this.RoutesConvertBtn.Name = "RoutesConvertBtn";
-            this.RoutesConvertBtn.Size = new System.Drawing.Size(134, 34);
+            this.RoutesConvertBtn.Size = new System.Drawing.Size(259, 34);
             this.RoutesConvertBtn.TabIndex = 2;
-            this.RoutesConvertBtn.Text = "routes.txt 変換";
+            this.RoutesConvertBtn.Text = "routes.txt と stops.txt を 変換";
             this.RoutesConvertBtn.UseVisualStyleBackColor = true;
             this.RoutesConvertBtn.Click += new System.EventHandler(this.RoutesConvertBtn_Click);
-            // 
-            // StopsConvertBtn
-            // 
-            this.StopsConvertBtn.Location = new System.Drawing.Point(410, 119);
-            this.StopsConvertBtn.Name = "StopsConvertBtn";
-            this.StopsConvertBtn.Size = new System.Drawing.Size(134, 34);
-            this.StopsConvertBtn.TabIndex = 3;
-            this.StopsConvertBtn.Text = "stops.txt 変換";
-            this.StopsConvertBtn.UseVisualStyleBackColor = true;
-            this.StopsConvertBtn.Click += new System.EventHandler(this.StopsConvertBtn_Click);
             // 
             // label2
             // 
@@ -87,7 +76,7 @@ namespace MieGTFSConverter {
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(408, 169);
+            this.label3.Location = new System.Drawing.Point(57, 194);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(166, 12);
             this.label3.TabIndex = 5;
@@ -121,7 +110,6 @@ namespace MieGTFSConverter {
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.StopsConvertBtn);
             this.Controls.Add(this.RoutesConvertBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.GtfsTextBox);
@@ -138,7 +126,6 @@ namespace MieGTFSConverter {
         private System.Windows.Forms.TextBox GtfsTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button RoutesConvertBtn;
-        private System.Windows.Forms.Button StopsConvertBtn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label StatusLabel;

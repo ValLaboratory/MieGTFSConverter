@@ -27,7 +27,13 @@ namespace MieGTFSConverter {
 
             // routes.txtと同じ場所に routes_変換済.txt を出力
             string outDir = Path.GetDirectoryName(routesTxtPath);
-            StreamWriter sw = new StreamWriter(outDir + "\\routes_変換済.txt", false, Encoding.UTF8);
+
+            outDir = outDir + "\\変換後GTFS";
+            if ( ! Directory.Exists(outDir) ) {
+                Directory.CreateDirectory(outDir);
+            }
+
+            StreamWriter sw = new StreamWriter(outDir + "\\routes.txt", false, Encoding.UTF8);
 
 
             using (var parser = new TextFieldParser(routesTxtPath)) {
@@ -72,7 +78,7 @@ namespace MieGTFSConverter {
 
             sw.Close();
 
-            iProgress.Report("下記を出力\n" + outDir + "\\routes_変換済.txt");
+            iProgress.Report("下記を出力\n" + outDir + "\\routes.txt");
         }
 
         public void ConvertStopsTxt(string stopsTxtPath) {
@@ -82,10 +88,11 @@ namespace MieGTFSConverter {
 
             iProgress.Report("zipをダウンロード");
 
-            string outDir = Path.GetDirectoryName(stopsTxtPath);
+            string tmpDir = Path.GetDirectoryName(stopsTxtPath) + "\\tmp";
+            string outDir = Path.GetDirectoryName(stopsTxtPath) + "\\変換後GTFS";
 
-            if (Directory.Exists(outDir + "\\tmp")) {
-                Directory.Delete(outDir + "\\tmp",true);
+            if (Directory.Exists(tmpDir)) {
+                Directory.Delete(tmpDir,true);
             }
 
 
@@ -97,9 +104,9 @@ namespace MieGTFSConverter {
             //バイト配列を文字列に変換
             string source = System.Text.Encoding.UTF8.GetString(sourceData);
 
-            // outDirの下にtmpフォルダを作成
-            if ( ! Directory.Exists(outDir + "\\tmp") ) {
-                Directory.CreateDirectory(outDir + "\\tmp");
+            // tmpフォルダを作成
+            if ( ! Directory.Exists(tmpDir) ) {
+                Directory.CreateDirectory(tmpDir);
             }
 
             int no = 0;
@@ -110,7 +117,7 @@ namespace MieGTFSConverter {
                 no++;
                 string gtfsURL = m.Value; // 発見した文字列
                 byte[] data = webClient.DownloadData(gtfsURL);
-                using (FileStream fs = new FileStream($"{outDir}\\tmp\\{no}.zip", FileMode.Create, FileAccess.ReadWrite)) {
+                using (FileStream fs = new FileStream($"{tmpDir}\\{no}.zip", FileMode.Create, FileAccess.ReadWrite)) {
                     fs.Write(data, 0, data.Length);
                 }
             }
@@ -119,11 +126,11 @@ namespace MieGTFSConverter {
             // tmp/*.zipを解凍
             iProgress.Report("zipを解凍");
             for (int i=1;i<=no;i++) {
-                var file = $"{outDir}\\tmp\\{i}.zip";
+                var file = $"{tmpDir}\\{i}.zip";
                 using (ZipArchive archive = ZipFile.OpenRead(file)) {
                     var f = archive.GetEntry("stops.txt");
                     var ms = f.Open();
-                    using (var fileStream = new FileStream($"{outDir}\\tmp\\{i}_stops.txt",
+                    using (var fileStream = new FileStream($"{tmpDir}\\{i}_stops.txt",
                         FileMode.CreateNew, FileAccess.ReadWrite)) {
                         ms.CopyTo(fileStream);
                     }
@@ -135,7 +142,7 @@ namespace MieGTFSConverter {
             // tmp/*_stops.txtを読み込んで キー stop_id, 値 stop_lat,stop_lon を辞書に登録
             Dictionary<string,string[]> latLonDic = new Dictionary<string, string[]>();
             for (int i = 1; i <= no; i++) {
-                var file = $"{outDir}\\tmp\\{i}_stops.txt";
+                var file = $"{tmpDir}\\{i}_stops.txt";
 
                 using (var parser = new TextFieldParser(file)) {
 
@@ -179,12 +186,12 @@ namespace MieGTFSConverter {
                 }
             }
 
-            // stops.txtと同じ場所に routes_変換済.txt を出力
-            StreamWriter sw = new StreamWriter(outDir + "\\stops_変換済.txt", false, Encoding.UTF8);
+            // 変換後GTFSに routes.txt を出力
+            StreamWriter sw = new StreamWriter(outDir + "\\stops.txt", false, Encoding.UTF8);
 
 
             // stops.txtを読み込み、stop_latとstop_lonを埋める
-            using (var parser = new TextFieldParser(outDir + "\\stops.txt")) {
+            using (var parser = new TextFieldParser(stopsTxtPath)) {
 
                 parser.HasFieldsEnclosedInQuotes = true;
                 parser.Delimiters = new string[] { "," };
@@ -232,7 +239,7 @@ namespace MieGTFSConverter {
 
             sw.Close();
 
-            iProgress.Report("下記を出力\n" + outDir + "\\stopss_変換済.txt");
+            iProgress.Report("下記を出力\n" + outDir + "\\stops.txt");
 
         }
     }
