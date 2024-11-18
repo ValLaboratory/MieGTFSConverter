@@ -178,6 +178,10 @@ namespace MieGTFSConverter {
                         string stop_lat = fields[stop_lat_idx];
                         string stop_lon = fields[stop_lon_idx];
 
+                        // stop_idのアンダースコアは、ハイフンに変換
+                        stop_id  = stop_id.Replace("_","-");
+
+
                         if ( ! latLonDic.ContainsKey(stop_id) ) {
                             latLonDic.Add(stop_id,new string[]{stop_lat,stop_lon});
                         }
@@ -223,7 +227,7 @@ namespace MieGTFSConverter {
                     iProgress.Report(rowCnt + "行目読込");
                     fields = parser.ReadFields();
 
-                    string stop_id = fields[stop_id_idx].Replace('-','_');
+                    string stop_id = fields[stop_id_idx];
 
                     if (latLonDic.ContainsKey(stop_id)) {
                         string[] latLon = latLonDic[stop_id];
