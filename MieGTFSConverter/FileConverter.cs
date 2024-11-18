@@ -25,9 +25,8 @@ namespace MieGTFSConverter {
                 throw new Exception(routesTxtPath + " がありません。");
             }
 
-            // routes.txtと同じ場所に routes_変換済.txt を出力
-            string outDir = Path.GetDirectoryName(routesTxtPath);
-
+            // 変換後GTFSに routes_変換済.txt を出力
+            string outDir = Directory.GetParent(Path.GetDirectoryName(routesTxtPath)).ToString();
             outDir = outDir + "\\変換後GTFS";
             if ( ! Directory.Exists(outDir) ) {
                 Directory.CreateDirectory(outDir);
@@ -89,7 +88,7 @@ namespace MieGTFSConverter {
             iProgress.Report("zipをダウンロード");
 
             string tmpDir = Path.GetDirectoryName(stopsTxtPath) + "\\tmp";
-            string outDir = Path.GetDirectoryName(stopsTxtPath) + "\\変換後GTFS";
+            string outDir = Directory.GetParent(Path.GetDirectoryName(stopsTxtPath)) + "\\変換後GTFS";
 
             if (Directory.Exists(tmpDir)) {
                 Directory.Delete(tmpDir,true);

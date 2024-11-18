@@ -119,6 +119,21 @@ namespace MieGTFSConverter {
                     fileConverter.ConvertStopsTxt(gtfsPath + "\\stops.txt");
                 });
 
+
+                // stops.txt,routes.txt以外のtxtを変換後GTFSにコピー
+                string[] files = System.IO.Directory.GetFiles(gtfsPath, "*.txt", System.IO.SearchOption.TopDirectoryOnly);
+                string outDir = Directory.GetParent(gtfsPath).ToString() + "\\変換後GTFS";
+                foreach (string file in files) {
+                    string fileName = Path.GetFileName(file);
+                    if ( fileName == "stops.txt" || fileName == "routes.txt" ) {
+                        continue;
+                    }
+                    File.Copy(file,outDir + "\\" + fileName);
+                }
+
+
+                iProgress.Report("下記に出力\n" + outDir);
+
             } catch (Exception ex) {
                 StatusLabel.Text = "stops.txt 変換 失敗\n";
                 StatusLabel.Text += ex.Message;
@@ -132,6 +147,7 @@ namespace MieGTFSConverter {
             } finally {
                 RoutesConvertBtn.Enabled = true;
             }
+
         }
 
 
