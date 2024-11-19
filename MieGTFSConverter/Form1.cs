@@ -61,13 +61,18 @@ namespace MieGTFSConverter {
 
         }
 
-        private void RoutesConvertBtn_Click(object sender, EventArgs e) {
+        private async void RoutesConvertBtn_Click(object sender, EventArgs e) {
+
+            Progress<string> progress = new Progress<string>(onProgressChanged);
+            IProgress<string> iProgress = (IProgress<string>)progress;
+            FileConverter fileConverter = new FileConverter(iProgress);
+
+            string gtfsPath = GtfsTextBox.Text.Trim();
+
             try {
 
                 RoutesConvertBtn.Enabled = false;
 
-                Progress<string> progress = new Progress<string>(onProgressChanged);
-                IProgress<string> iProgress = (IProgress<string>)progress;
 
                 iProgress.Report("routes.txt 変換 開始");
 
@@ -76,7 +81,6 @@ namespace MieGTFSConverter {
                     throw new Exception("GTFS が指定されてません。");
                 }
 
-                string gtfsPath = GtfsTextBox.Text.Trim();
 
                 if (!Directory.Exists(gtfsPath)) {
                     GtfsTextBox.Focus();
@@ -85,9 +89,7 @@ namespace MieGTFSConverter {
 
                 StatusLabel.Text = "GTFS読み込み";
 
-                FileConverter fileConverter = new FileConverter(iProgress);
                 fileConverter.ConvertRoutesTxt(gtfsPath + "\\routes.txt");
-
 
             } catch (Exception ex) {
                 StatusLabel.Text = "routes.txt 変換 失敗\n";
@@ -97,20 +99,9 @@ namespace MieGTFSConverter {
 
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-
-
-            } finally {
-                RoutesConvertBtn.Enabled = true;
             }
-        }
 
-        private async void StopsConvertBtn_Click(object sender, EventArgs e) {
             try {
-
-                StopsConvertBtn.Enabled = false;
-
-                Progress<string> progress = new Progress<string>(onProgressChanged);
-                IProgress<string> iProgress = (IProgress<string>)progress;
 
                 iProgress.Report("stops.txt 変換 開始");
 
@@ -119,24 +110,29 @@ namespace MieGTFSConverter {
                     throw new Exception("GTFS が指定されてません。");
                 }
 
-                string gtfsPath = GtfsTextBox.Text.Trim();
-
                 if (!Directory.Exists(gtfsPath)) {
                     GtfsTextBox.Focus();
                     throw new Exception(gtfsPath + " は存在しません。");
                 }
 
-                await Task.Run(() =>
-                {
-                    FileConverter fileConverter = new FileConverter(iProgress);
+                await Task.Run(() => {
                     fileConverter.ConvertStopsTxt(gtfsPath + "\\stops.txt");
-
-
-                    //iProgress.Report("GTFS読み込み");
-
                 });
 
 
+                // stops.txt,routes.txt以外のtxtを変換後GTFSにコピー
+                string[] files = System.IO.Directory.GetFiles(gtfsPath, "*.txt", System.IO.SearchOption.TopDirectoryOnly);
+                string outDir = Directory.GetParent(gtfsPath).ToString() + "\\変換後GTFS";
+                foreach (string file in files) {
+                    string fileName = Path.GetFileName(file);
+                    if ( fileName == "stops.txt" || fileName == "routes.txt" ) {
+                        continue;
+                    }
+                    File.Copy(file,outDir + "\\" + fileName);
+                }
+
+
+                iProgress.Report("下記に出力\n" + outDir);
 
             } catch (Exception ex) {
                 StatusLabel.Text = "stops.txt 変換 失敗\n";
@@ -149,9 +145,11 @@ namespace MieGTFSConverter {
 
 
             } finally {
-                StopsConvertBtn.Enabled = true;
+                RoutesConvertBtn.Enabled = true;
             }
+
         }
+
 
         // 進捗通知を受けたらラベルに表示
         private void onProgressChanged(string txt) {
