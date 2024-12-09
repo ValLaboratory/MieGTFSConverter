@@ -89,6 +89,7 @@ namespace MieGTFSConverter {
 
                 StatusLabel.Text = "GTFS読み込み";
 
+                // route_long_name _  jp_parent_route_id → route_short_name
                 fileConverter.ConvertRoutesTxt(gtfsPath + "\\routes.txt");
 
             } catch (Exception ex) {
@@ -103,7 +104,7 @@ namespace MieGTFSConverter {
 
             try {
 
-                iProgress.Report("stops.txt 変換 開始");
+                //iProgress.Report("stops.txt 変換 開始");
 
                 if (GtfsTextBox.Text.Trim() == "") {
                     GtfsTextBox.Focus();
@@ -115,9 +116,10 @@ namespace MieGTFSConverter {
                     throw new Exception(gtfsPath + " は存在しません。");
                 }
 
-                await Task.Run(() => {
-                    fileConverter.ConvertStopsTxt(gtfsPath + "\\stops.txt");
-                });
+                // HPからGTFSをダウンロードし、緯度・経度だけ取得しstops.txtを更新
+                //await Task.Run(() => {
+                //    fileConverter.ConvertStopsTxt(gtfsPath + "\\stops.txt");
+                //});
 
 
                 // stops.txt,routes.txt以外のtxtを変換後GTFSにコピー
@@ -125,7 +127,7 @@ namespace MieGTFSConverter {
                 string outDir = Directory.GetParent(gtfsPath).ToString() + "\\変換後GTFS";
                 foreach (string file in files) {
                     string fileName = Path.GetFileName(file);
-                    if ( fileName == "stops.txt" || fileName == "routes.txt" ) {
+                    if ( /*fileName == "stops.txt" || */ fileName == "routes.txt" ) {
                         continue;
                     }
                     File.Copy(file,outDir + "\\" + fileName);

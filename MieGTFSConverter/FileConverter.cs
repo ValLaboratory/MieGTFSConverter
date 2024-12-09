@@ -20,6 +20,10 @@ namespace MieGTFSConverter {
             iProgress = _iProgress;
         }
 
+        /// <summary>
+        /// route_long_name _  jp_parent_route_id → route_short_name
+        /// </summary>
+        /// <param name="routesTxtPath"></param>
         public void ConvertRoutesTxt(string routesTxtPath) {
             if ( ! File.Exists(routesTxtPath) ) {
                 throw new Exception(routesTxtPath + " がありません。");

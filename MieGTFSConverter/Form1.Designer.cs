@@ -76,6 +76,7 @@ namespace MieGTFSConverter {
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label3.Location = new System.Drawing.Point(57, 194);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(166, 12);
